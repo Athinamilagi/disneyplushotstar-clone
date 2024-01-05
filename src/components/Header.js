@@ -60,6 +60,7 @@ const Container = styled.div`
   text-transform: uppercase;
   padding: 0 36px;
   justify-content: space-between;
+  overflow : hidden;
 `;
 
 const Logo = styled.div`
