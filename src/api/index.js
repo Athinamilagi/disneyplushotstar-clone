@@ -1,2 +1,19 @@
-import tmdb from "tmdb-js-wrapper";
+const BASE_URL = "https://api.themoviedb.org/3/movie/popular";
+const API_KEY = "?api_key=ad0da639ade7e22dd005f4dcabfe5baf";
 
+const API_URL_REC = `${BASE_URL}${API_KEY}`;
+
+// recommendedMovies();
+console.log(API_URL_REC);
+
+export async function recommendedMovies() {
+  console.log("function called");
+  let res = await fetch(API_URL_REC)
+    .then((res) => res.json())
+    .then((data) => {
+      return data.results;
+    })
+    .catch((err) => console.log(err));
+  
+    return res;
+}
