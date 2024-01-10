@@ -1,15 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Card = (props) => {
-  console.log(props);
-  const handleHover = (video) => {
-    video.play();
-  };
-
-  const handleLeave = (video) => {
-    video.pause();
-  };
   return (
     <CardWrapper>
       <Wrap>
@@ -17,7 +10,9 @@ const Card = (props) => {
       </Wrap>
       <Content>
         <ButtonComponent>
-          <button id="one">Watch Now</button>
+          <Link to="../details">
+            <button id="one">Watch Now</button>
+          </Link>
           <button id="two">+</button>
         </ButtonComponent>
         Overview :- <br />
@@ -41,7 +36,7 @@ const CardWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 350px;
-  object-fit: cover;
+  position: relative;
 `;
 
 const Wrap = styled.div`
@@ -83,4 +78,6 @@ const Date = styled.small`
 `;
 const Description = styled.div`
   color: rgb(170, 180, 90);
+  font-weight: 300;
+  font-style: italic;
 `;

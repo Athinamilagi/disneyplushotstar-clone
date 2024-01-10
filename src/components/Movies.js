@@ -89,6 +89,7 @@ const Movies = () => {
                   title={data.original_title}
                   description={data.overview}
                   date={data.release_date}
+                  id={data.id}
                 />
               </CardContainer>
             )}
@@ -105,6 +106,7 @@ const Container = styled.div`
 
 const Content = styled(Slider)`
   margin-top: 15px;
+  z-index: 1;
 
   button {
     z-index: 1;
@@ -124,7 +126,6 @@ const SlideContainer = styled.div`
     border-radius: 20px;
     width: 100%;
     height: 100%;
-    object-fit: fill;
     transition-duration: 300ms;
     &:hover {
       border: 4px solid rgba(249, 249, 249, 0.8);
@@ -136,6 +137,7 @@ const CardContainer = styled.div`
   position: absolute;
   top: 0;
   left: -25px;
+  object-fit: cover;
   width: 350px;
   display: flex;
   justify-content: center;
