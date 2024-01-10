@@ -1,52 +1,56 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 function Header() {
   return (
-    <Container>
-      <Logo>
-        <img src="/images/logo.svg" alt="logo" />
-      </Logo>
-      <NavMenu>
-        <li>
-          <a href="/">
-            <img src="/images/home-icon.svg" alt="home-icon" />
-            <span>home</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <img src="/images/search-icon.svg" alt="search-icon" />
-            <span>Search</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <img src="/images/watchlist-icon.svg" alt="watchlist-icon" />
-            <span>watchlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <img src="/images/original-icon.svg" alt="original-icon" />
-            <span>originals</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <img src="/images/movie-icon.svg" alt="movies-icon" />
-            <span>movies</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <img src="/images/series-icon.svg" alt="series-icon" />
-            <span>series</span>
-          </a>
-        </li>
-      </NavMenu>
-      <Profile />
-    </Container>
+    <>
+      <Container>
+        <Logo>
+          <img src="/images/logo.svg" alt="logo" />
+        </Logo>
+        <NavMenu>
+          <li>
+            <a href="home">
+              <img src="/images/home-icon.svg" alt="home-icon" />
+              <span>home</span>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <img src="/images/search-icon.svg" alt="search-icon" />
+              <span>Search</span>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <img src="/images/watchlist-icon.svg" alt="watchlist-icon" />
+              <span>watchlist</span>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <img src="/images/original-icon.svg" alt="original-icon" />
+              <span>originals</span>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <img src="/images/movie-icon.svg" alt="movies-icon" />
+              <span>movies</span>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <img src="/images/series-icon.svg" alt="series-icon" />
+              <span>series</span>
+            </a>
+          </li>
+        </NavMenu>
+        <Profile />
+      </Container>
+      <Outlet />
+    </>
   );
 }
 
@@ -60,7 +64,7 @@ const Container = styled.div`
   text-transform: uppercase;
   padding: 0 36px;
   justify-content: space-between;
-  overflow : hidden;
+  overflow: hidden;
 `;
 
 const Logo = styled.div`
