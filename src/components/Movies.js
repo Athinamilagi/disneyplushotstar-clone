@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { recommendedMovies } from "../api";
 import Slider from "react-slick";
 import Card from "./Card";
+import { Link } from "react-router-dom";
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -43,7 +44,6 @@ const Movies = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: false,
-          initialSlide: 0,
           dots: false,
         },
       },
@@ -52,7 +52,7 @@ const Movies = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 0,
+          initialSlide: 2,
           dots: false,
         },
       },
@@ -61,7 +61,6 @@ const Movies = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 0,
           dots: false,
         },
       },
@@ -78,10 +77,12 @@ const Movies = () => {
             onMouseEnter={() => handleHover(index)}
             onMouseLeave={handleLeave}
           >
-            <img
-              src={`https://image.tmdb.org/t/p/original/${data.poster_path}?api_key=ad0da639ade7e22dd005f4dcabfe5baf`}
-              alt="poster"
-            />
+            <Link to="../details">
+              <img
+                src={`https://image.tmdb.org/t/p/original/${data.poster_path}?api_key=ad0da639ade7e22dd005f4dcabfe5baf`}
+                alt="poster"
+              />
+            </Link>
             {hoveredSlide === index && (
               <CardContainer>
                 <Card
@@ -107,17 +108,17 @@ const Container = styled.div`
 const Content = styled(Slider)`
   margin-top: 15px;
   z-index: 1;
-
+  
   button {
     z-index: 1;
   }
-
+  
   .slick-list {
     overflow: visible;
   }
-`;
-
-const SlideContainer = styled.div`
+  `;
+  
+  const SlideContainer = styled.div`
   cursor: pointer;
   position: relative;
   height: 300px;
@@ -131,9 +132,9 @@ const SlideContainer = styled.div`
       border: 4px solid rgba(249, 249, 249, 0.8);
     }
   }
-`;
-
-const CardContainer = styled.div`
+  `;
+  
+  const CardContainer = styled.div`
   position: absolute;
   top: 0;
   left: -25px;
