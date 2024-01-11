@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 function Header() {
@@ -47,7 +47,9 @@ function Header() {
             </a>
           </li>
         </NavMenu>
-        <Profile />
+        <Link to="/login">
+          <Profile src="/images/podcast.png" />
+        </Link>
       </Container>
       <Outlet />
     </>
