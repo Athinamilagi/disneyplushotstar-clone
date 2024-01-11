@@ -5,12 +5,12 @@ import styled from "styled-components";
 const Card = (props) => {
   return (
     <CardWrapper>
-      <Wrap>
+      <Wrap to="/details">
         <img src={props.imageUrl} alt="poster" />
       </Wrap>
       <Content>
         <ButtonComponent>
-          <Link to="../details">
+          <Link to="/details">
             <button id="one">Watch Now</button>
           </Link>
           <button id="two">+</button>
@@ -39,7 +39,7 @@ const CardWrapper = styled.div`
   position: relative;
 `;
 
-const Wrap = styled.div`
+const Wrap = styled(Link)`
   width: 100%;
   height: 300px;
 
