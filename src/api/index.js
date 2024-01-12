@@ -15,3 +15,13 @@ export async function recommendedMovies() {
   
     return res;
 }
+export async function getMovies(id) {
+  let res = await fetch(API_URL_REC)
+    .then((res) => res.json())
+    .then((data) => {
+      return data.results;
+    })
+    .catch((err) => console.log(err));
+  
+    return res;
+}
