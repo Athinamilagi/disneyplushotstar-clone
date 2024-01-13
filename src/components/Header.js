@@ -11,7 +11,7 @@ function Header() {
         </Logo>
         <NavMenu>
           <li>
-            <a href="home">
+            <a href="/home">
               <img src="/images/home-icon.svg" alt="home-icon" />
               <span>home</span>
             </a>
@@ -65,6 +65,8 @@ const Container = styled.div`
   align-items: center;
   text-transform: uppercase;
   padding: 0 36px;
+  position: sticky;
+  z-index: 1;
   justify-content: space-between;
   overflow: hidden;
 `;
