@@ -1,55 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { certification, getMovies, imageUrl, videoUrl } from "../api";
 
 const Detail = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState({});
   const [favourite, setFavourite] = useState(true);
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [videoSrc, setVideoSrc] = useState("");
 
+  const trailerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getMovies(id);
+        setMovie({
+          adult: data.adult,
+          backdrop_path: data.backdrop_path,
+          genre_ids: data.genres.map((genre) => genre.name),
+          id: data.id,
+          duration: convertToHoursAndMinutes(data.runtime),
+          original_language: data.original_language,
+          original_title: data.original_title,
+          overview: data.overview,
+          popularity: data.popularity,
+          image: await imageUrl(data.poster_path),
+          release_date: data.release_date,
+          title: data.title,
+          video: await videoUrl(data.id),
+          vote_average: data.vote_average,
+          vote_count: data.vote_count,
+          rating: await certification(data.id),
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+  console.log(movie?.video);
+  const convertToHoursAndMinutes = (totalMinutes) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${hours}h ${minutes}min`;
+  };
   const handleClick = () => {
     setFavourite((prevFavourite) => !prevFavourite);
   };
+
+  const handleTrailerButtonClick = () => {
+    setVideoSrc(movie?.video?.key);
+    setShowTrailer(true);
+  };
+
+  const handleTrailerClose = (e) => {
+    if (trailerRef.current && !trailerRef.current.contains(e.target)) {
+      setVideoSrc("");
+      setShowTrailer(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleTrailerClose);
+
+    return () => {
+      document.removeEventListener("mousedown", handleTrailerClose);
+    };
+  }, []);
+
   return (
     <Container>
       <Background>
-        <img
-          src={`https://image.tmdb.org/t/p/original/k7rEpZfNPB35FFHB00ZhXHKTL7X.jpg?api_key=ad0da639ade7e22dd005f4dcabfe5baf`}
-          alt="poster"
-        />
+        <Center>
+          <img src={movie?.image} alt="poster" />
+        </Center>
       </Background>
       <MovieImage>
-        <img
-          src={`https://image.tmdb.org/t/p/original/k7rEpZfNPB35FFHB00ZhXHKTL7X.jpg?api_key=ad0da639ade7e22dd005f4dcabfe5baf`}
-          alt="poster"
-        />
+        <img src={movie?.image} alt="poster" />
       </MovieImage>
       <MovieContainer>
         <MovieDetail>
-          <Name>
-            Snow Of Society<span>(2023)</span>
-          </Name>
-          <Year>12/15/2023</Year>
-          <Genere>Action,Comedy</Genere>
-          <Duration>1h59m</Duration>
-          <Rating>A</Rating>
+          <Name>{movie?.title}</Name>
+          <Year>{movie?.release_date}</Year>
+          <Genere>
+            {movie?.genre_ids?.map((data, index) => (
+              <React.Fragment key={index}>
+                {index > 0 && ", "} {data}
+              </React.Fragment>
+            ))}
+          </Genere>
+          <Duration>{movie?.duration}</Duration>
+          {movie.rating && <Rating>{movie?.rating}</Rating>}
           <Description>
             <br />
             <span>Overview</span>
             <br />
             <br />
-            Dan Morgan is many things: a devoted husband, a loving father, a
-            celebrated car salesman. He's also a former assassin. And when his
-            past catches up to his present, he's forced to take his unsuspecting
-            family on a road trip unlike any other.
+            {movie?.overview}
           </Description>
         </MovieDetail>
         <Controls>
           <UserScore>
-            <span>74%</span>UserScore
+            <span>{(movie?.vote_average * 1).toFixed(1)}%</span>UserScore
           </UserScore>
           <PlayButton>
             <img src="/images/play-icon-black.png" alt="playbtn" />
             <span>PLAY</span>
           </PlayButton>
-          <TrailerButton>
+          <TrailerButton onClick={handleTrailerButtonClick}>
             <img src="/images/play-icon-white.png" alt="playbtn" />
             <span>Trailer</span>
           </TrailerButton>
@@ -58,17 +120,28 @@ const Detail = () => {
           </AddButton>
           <FavouriteButton>
             <img
-              src={
-                favourite
-                  ? "/images/favourite-icon.png"
-                  : "/images/favourite-icon-full.png"
-              }
+              src={favourite ? "/images/star-icon.png" : "/images/star.png"}
               alt="favouritebtn"
               onClick={handleClick}
             />
           </FavouriteButton>
         </Controls>
       </MovieContainer>
+      {movie?.video?.key && (
+        <TrailerFrame showTrailer={showTrailer} ref={trailerRef}>
+          <iframe
+            width="100%"
+            height="100%"
+            src={`https://www.youtube.com/embed/${videoSrc}`}
+            title={movie?.video?.name}
+            className="embed hide"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <CloseButton onClick={() => setShowTrailer(false)}>Close</CloseButton>
+        </TrailerFrame>
+      )}
     </Container>
   );
 };
@@ -84,16 +157,23 @@ const Container = styled.div`
   align-items: center;
   flex-wrap: nowrap;
   justify-content: space-evenly;
+  z-index: 0;
 `;
 
 const Background = styled.div`
+  opacity: 0.6;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: -1;
-  opacity: 0.8;
+`;
+
+const Center = styled.div`
+  width: 100vw;
+  height: 200vh;
+
   img {
     width: 100%;
     height: 100%;
@@ -126,7 +206,7 @@ const MovieDetail = styled.ul`
   margin: auto 15px;
   align-items: center;
   font-size: 1em;
-  grid-template: repeat(4, 75px) / repeat(5, 125px);
+  grid-template: repeat(4, 75px) / repeat(5, 155px);
   flex-grow: 1;
 `;
 const Name = styled.li`
@@ -140,25 +220,25 @@ const Name = styled.li`
 const Rating = styled.li`
   margin: auto -18px;
   padding: 5px;
-  border: 3px solid gray;
+  border: 3px solid rgba(0, 0, 0, 0.8);
   border-radius: 4px;
-  color: gray;
+  color: rgba(0, 0, 0, 0.8);
   justify-self: flex-start;
 `;
 const Year = styled.li`
   list-style-type: disc;
   margin: auto;
   font-family: math;
-  font-size: 18px;
+  font-size: 1em;
 `;
 const Genere = styled.li`
   margin: auto 10px;
   list-style-type: disc;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 1em;
 `;
 const Duration = styled.li`
-  margin: auto;
+  margin-left: 15px;
   font-size: 18px;
   list-style-type: disc;
   font-family: math;
@@ -277,4 +357,27 @@ const FavouriteButton = styled.button`
     height: 24px;
     object-fit: cover;
   }
+`;
+
+const TrailerFrame = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  height: 70vh;
+  width: 70vw;
+  z-index: ${(props) => (props.showTrailer ? "2" : "-1")};
+  border-radius: 10px;
+  display: ${(props) => (props.showTrailer ? "block" : "none")};
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: -15px;
+  right: -20px;
+  color: black;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
 `;
