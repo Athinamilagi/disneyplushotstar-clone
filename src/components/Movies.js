@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { recommendedMovies } from "../api";
+import { popularMovies } from "../api";
 import Slider from "react-slick";
 import Card from "./Card";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ const Movies = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await recommendedMovies();
+        const data = await popularMovies("popular");
         setMovies(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -77,7 +77,7 @@ const Movies = () => {
             onMouseEnter={() => handleHover(index)}
             onMouseLeave={handleLeave}
           >
-            <Link to="../details">
+            <Link to={`..details/${data.id}`}>
               <img
                 src={`https://image.tmdb.org/t/p/original/${data.poster_path}?api_key=ad0da639ade7e22dd005f4dcabfe5baf`}
                 alt="poster"
