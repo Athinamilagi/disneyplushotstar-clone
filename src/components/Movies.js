@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { popularMovies } from "../api";
+import { getMovies} from "../api";
 import Slider from "react-slick";
 import Card from "./Card";
 import { Link } from "react-router-dom";
@@ -12,8 +12,8 @@ const Movies = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await popularMovies("popular");
-        setMovies(data);
+        const data = await getMovies("popular");
+        setMovies(data.results);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -69,7 +69,7 @@ const Movies = () => {
 
   return (
     <Container>
-      <h3>Recommended For You</h3>
+      <h3>Popular Movies</h3>
       <Content {...settings}>
         {movies.map((data, index) => (
           <SlideContainer

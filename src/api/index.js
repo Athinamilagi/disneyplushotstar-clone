@@ -42,23 +42,9 @@ export async function certification(req) {
 
   return res;
 }
-export async function popularMovies(req) {
-  const BASE_URL = `https://api.themoviedb.org/3/movie/${req}`;
-  const API_URL_REC = `${BASE_URL}${API_KEY}`;
-  let res = await fetch(API_URL_REC)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data.results);
-      return data.results;
-    })
-    .catch((err) => console.log(err));
-
-  return res;
-}
 export async function getMovies(req) {
-  const BASE_URL = `https://api.themoviedb.org/3/movie/${req}`;
-  const API_URL_REC = `${BASE_URL}${API_KEY}`;
-  let res = await fetch(API_URL_REC)
+  const BASE_URL = `https://api.themoviedb.org/3/movie/${req}${API_KEY}`;
+  let res = await fetch(BASE_URL)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
