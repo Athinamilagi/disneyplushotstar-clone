@@ -68,6 +68,7 @@ const Movies = () => {
   };
 
   return (
+    movies ? (
     <Container>
       <h3>Popular Movies</h3>
       <Content {...settings}>
@@ -97,7 +98,10 @@ const Movies = () => {
           </SlideContainer>
         ))}
       </Content>
-    </Container>
+    </Container> 
+    ) :(
+          <h2>Loading...</h2>
+    )
   );
 };
 
