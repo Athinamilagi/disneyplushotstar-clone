@@ -37,6 +37,9 @@ const CardWrapper = styled.div`
   flex-wrap: wrap;
   width: 350px;
   position: relative;
+  @media (max-width: 428px){
+  width:200px;
+  }
 `;
 
 const Wrap = styled(Link)`
