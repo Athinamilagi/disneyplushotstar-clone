@@ -32,7 +32,7 @@ const Movies = () => {
 
   var settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 6,
@@ -43,7 +43,7 @@ const Movies = () => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: false,
+          infinite: true,
           dots: false,
         },
       },
@@ -53,12 +53,14 @@ const Movies = () => {
           slidesToShow: 2,
           slidesToScroll: 2,
           initialSlide: 2,
+          infinite: true,
           dots: false,
         },
       },
       {
         breakpoint: 480,
         settings: {
+          infinite: true,
           slidesToShow: 1,
           slidesToScroll: 1,
           dots: false,
@@ -150,6 +152,10 @@ const Content = styled(Slider)`
   background-color: #040714;
   border-radius: 20px;
   z-index: 1;
+
+  @media (max-width:428px){
+  width:200px;
+  }
 `;
 
 export default Movies;
