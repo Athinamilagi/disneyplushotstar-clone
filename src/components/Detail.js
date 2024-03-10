@@ -73,6 +73,7 @@ const Detail = () => {
   }, []);
 
   return (
+    movie ? (
     <Container>
       <Background>
         <Center>
@@ -143,9 +144,11 @@ const Detail = () => {
         </TrailerFrame>
       )}
     </Container>
+) : (
+  <h2>Loading....</h2>
+)
   );
 };
-
 export default Detail;
 
 const Container = styled.div`
